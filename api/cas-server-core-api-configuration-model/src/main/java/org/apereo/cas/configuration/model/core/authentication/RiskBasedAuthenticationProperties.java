@@ -80,6 +80,13 @@ public class RiskBasedAuthenticationProperties implements Serializable {
          * in order to locate authentication events.
          */
         private long daysInRecentHistory = 30;
+
+        /**
+         * To prevent multiple looks ups of same data when calcuating risk, cache streamed events to a list for the duration of the request
+         * to prevent multiple look-ups from @Link{CasEventRepository} during evaluation of risk.  Trade off is entire data stream
+         * must be fetched before caching takes effect.
+         */
+        private boolean cacheEventStreamPerRequest;
     }
 
     @Getter

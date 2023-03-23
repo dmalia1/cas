@@ -45,15 +45,8 @@ public abstract class BaseAuthenticationRequestRiskCalculator implements Authent
     @Override
     public final AuthenticationRiskScore calculate(final Authentication authentication,
                                                    final RegisteredService service,
-                                                   final HttpServletRequest request) {
-        val principal = authentication.getPrincipal();
-        val events = new Supplier<Stream<? extends CasEvent>>() {
-            @Override
-            public Stream<? extends CasEvent> get() {
-                return getCasTicketGrantingTicketCreatedEventsFor(principal.getId());
-            }
-        };
-
+                                                   final HttpServletRequest request,
+                                                   final Supplier<Stream<? extends CasEvent>> events) {
         if (events.get().findAny().isEmpty()) {
             return new AuthenticationRiskScore(HIGHEST_RISK_SCORE);
         }
